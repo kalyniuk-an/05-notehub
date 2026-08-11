@@ -1,20 +1,14 @@
 import { useQuery} from '@tanstack/react-query'
-import { useState, type ComponentType } from 'react'
+import { useState } from 'react'
 
 
 import css from './App.module.css'
 import NoteList from '../NoteList/NoteList'
 import SearchBox from '../SearchBox/SearchBox'
 import { fetchNotes, type FetchNotesResponse } from '../../services/noteServise'
-import ReactPaginateModule from "react-paginate";
-import type { ReactPaginateProps } from "react-paginate";
+import Pagination from '../Pagination/Pagination'
+
 // import { useDebounce } from 'use-debounce'
-
-type ModuleWithDefault<T> = { default: T };
-
-const ReactPaginate = (
-  ReactPaginateModule as unknown as ModuleWithDefault<ComponentType<ReactPaginateProps>>
-).default;
 
 const PER_PAGE = 12;
 
@@ -34,27 +28,21 @@ export default function App() {
   const handleSearch = (value: string) => {
     setSearch(value);
     setPage(1);
-    console.log('Search value:', value);
   };
+  const handlePageChange = (newPage: number) =>setPage(newPage);
 
   return (
     <div className={css.App}>
       <header className={css.toolbar}>
         {<SearchBox value={search} onSearch={handleSearch} />}
         {isSuccess && totalPages > 1 && (
-          <ReactPaginate
+          <Pagination
             pageCount={totalPages}
-            pageRangeDisplayed={3}
-            marginPagesDisplayed={1}
-            onPageChange={({ selected }) => { setPage(selected + 1); }}
-            forcePage={page - 1}
-            containerClassName={css.pagination}
-            activeClassName={css.active}
-            nextLabel=">"
-            previousLabel="<"
+            currentPage={page}
+            onPageChange={handlePageChange}
           />
         )}
-        {/*create note button*/}
+        {<button className={css.button}>Create note +</button>}
       </header>
       <NoteList notes={data?.notes || []} />
     </div>)
