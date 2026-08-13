@@ -39,3 +39,12 @@ export async function fetchNotes(params: FetchNotesParams): Promise<FetchNotesRe
   });
   return response.data;
 };
+
+export const deleteNote = async (noteId: string): Promise<Note> => {
+  const response = await axios.delete(`${API_URL}/${noteId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return response.data;
+}
