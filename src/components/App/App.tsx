@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 
@@ -10,7 +10,7 @@ import Pagination from '../Pagination/Pagination';
 import Modal from '../Modal/Modal';
 import NoteForm from '../NoteForm/NoteForm';
 
-// import { useDebounce } from 'use-debounce'
+import { useDebouncedCallback } from 'use-debounce'
 
 const PER_PAGE = 12;
 
@@ -18,18 +18,23 @@ export default function App() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [debouncedSearch, setDebouncedSearch] = useState('');
 
-  // const [debouncedSearch] = useDebounce(search, 500);
+  const debouncedSetSearch = useDebouncedCallback((value: string) => {
+    setDebouncedSearch(value);
+  }, 500);
+
   const { data, isSuccess } = useQuery<FetchNotesResponse>({
-    queryKey: ['notes', page, PER_PAGE, search],
-    queryFn: () => fetchNotes({ page, perPage: PER_PAGE, search }),
-    // placeholderData: keepPreviousData
+    queryKey: ['notes', page, PER_PAGE, debouncedSearch],
+    queryFn: () => fetchNotes({ page, perPage: PER_PAGE, search: debouncedSearch }),
+    placeholderData: keepPreviousData
   });
 
   const totalPages = data?.totalPages ?? 0;
 
   const handleSearch = (value: string) => {
     setSearch(value);
+    debouncedSetSearch(value);
     setPage(1);
   };
   const handlePageChange = (newPage: number) =>setPage(newPage);
