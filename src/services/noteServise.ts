@@ -48,3 +48,18 @@ export const deleteNote = async (noteId: string): Promise<Note> => {
   });
   return response.data;
 }
+
+interface CreateNoteParams {
+  title: string;
+  content: string;
+  tag: NoteTag;
+}
+
+export const createNote = async (note: CreateNoteParams): Promise<Note> => {
+  const response = await axios.post(`${API_URL}`, note, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return response.data;
+}
