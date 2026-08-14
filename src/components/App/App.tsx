@@ -34,9 +34,9 @@ export default function App() {
 
   const totalPages = data?.totalPages ?? 0;
 
-  const handleSearch = (value: string) => {
-    setSearch(value);
-    debouncedSetSearch(value);
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+    debouncedSetSearch(event.target.value);
     setPage(1);
   };
   const handlePageChange = (newPage: number) =>setPage(newPage);
@@ -44,7 +44,7 @@ export default function App() {
   return (
     <div className={css.App}>
       <header className={css.toolbar}>
-        <SearchBox value={search} onSearch={handleSearch} />
+        <SearchBox searchQuery={search} onSearch={handleSearch} />
         {isSuccess && totalPages > 1 && (
           <Pagination
             pageCount={totalPages}
