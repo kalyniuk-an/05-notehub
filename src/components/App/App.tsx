@@ -5,7 +5,7 @@ import { useState } from 'react';
 import css from './App.module.css';
 import NoteList from '../NoteList/NoteList';
 import SearchBox from '../SearchBox/SearchBox';
-import { fetchNotes, type FetchNotesResponse } from '../../services/noteServise';
+import { fetchNotes, type FetchNotesResponse } from '../../services/noteService';
 import Pagination from '../Pagination/Pagination';
 import Modal from '../Modal/Modal';
 import NoteForm from '../NoteForm/NoteForm';
