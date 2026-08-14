@@ -11,6 +11,8 @@ import Modal from '../Modal/Modal';
 import NoteForm from '../NoteForm/NoteForm';
 
 import { useDebouncedCallback } from 'use-debounce'
+import Loader from '../Loader/Loader';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 const PER_PAGE = 12;
 
@@ -24,7 +26,7 @@ export default function App() {
     setDebouncedSearch(value);
   }, 500);
 
-  const { data, isSuccess } = useQuery<FetchNotesResponse>({
+  const { data, isSuccess, isError, isLoading } = useQuery<FetchNotesResponse>({
     queryKey: ['notes', page, PER_PAGE, debouncedSearch],
     queryFn: () => fetchNotes({ page, perPage: PER_PAGE, search: debouncedSearch }),
     placeholderData: keepPreviousData
@@ -58,5 +60,11 @@ export default function App() {
           <NoteForm onClose={() => { setIsModalOpen(false); }} />
         </Modal>
       )}
+      {isLoading && <Loader />}
+      {isError ? (
+          <ErrorMessage />
+        ) : (
+          data && data.notes.length > 0 && <NoteList notes={data.notes} />
+        )}
     </div>)
 }
