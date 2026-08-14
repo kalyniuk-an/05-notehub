@@ -44,7 +44,7 @@ export default function App() {
   return (
     <div className={css.App}>
       <header className={css.toolbar}>
-        {<SearchBox value={search} onSearch={handleSearch} />}
+        <SearchBox value={search} onSearch={handleSearch} />
         {isSuccess && totalPages > 1 && (
           <Pagination
             pageCount={totalPages}
@@ -52,12 +52,12 @@ export default function App() {
             onPageChange={handlePageChange}
           />
         )}
-        {<button className={css.button} onClick={()=> setIsModalOpen(true)}>Create note +</button>}
+        <button className={css.button} onClick={()=> setIsModalOpen(true)}>Create note +</button>
       </header>
-      <NoteList notes={data?.notes || []} />
+    
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
-          <NoteForm onClose={() => { setIsModalOpen(false); }} />
+          <NoteForm onClose={() =>  setIsModalOpen(false)} />
         </Modal>
       )}
       {isLoading && <Loader />}

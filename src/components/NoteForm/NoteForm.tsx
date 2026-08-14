@@ -8,11 +8,10 @@ import { createNote } from '../../services/noteService';
 const validationSchema = Yup.object().shape({
   title: Yup.string()
     .min(3, 'Title must be at least 3 characters')
-    .max(100, 'Title must be at most 100 characters')
+    .max(50, 'Title must be at most 50 characters')
     .required('Title is required'),
   content: Yup.string()
-    .max(500, 'Content must be at most 500 characters')
-    .required('Content is required'),
+    .max(500, 'Content must be at most 500 characters'),
   tag: Yup.mixed<NoteTag>()
     .oneOf(['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'])
     .required('Tag is required')
@@ -91,7 +90,7 @@ export default function NoteForm({ onClose }: NoteFormProps) {
       </div>
 
       <div className={css.actions}>
-        <button type="button" className={css.cancelButton}>
+        <button type="button" className={css.cancelButton} onClick={onClose}>
           Cancel
         </button>
         <button type="submit" className={css.submitButton} >
